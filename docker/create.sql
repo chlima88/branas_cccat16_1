@@ -1,7 +1,5 @@
-drop schema cccat16 cascade;
-
+-- drop schema cccat16 cascade;
 create schema cccat16;
-
 create table cccat16.account (
 	account_id uuid primary key,
 	name text not null,
