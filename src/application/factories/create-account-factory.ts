@@ -10,8 +10,9 @@ export class CreateAccountFactory
     private controller: CreateAccountController;
     private usecase: CreateAccount;
     private dao: AccountDAO;
+    private dbconnection: DatabaseConnection;
 
-    constructor(readonly dbconnection: DatabaseConnection) {
+    constructor(dbconnection: DatabaseConnection) {
         this.dbconnection = dbconnection;
         this.controller = this.getController();
         this.usecase = this.getUsecase();

@@ -3,7 +3,7 @@ import pgp, { IDatabase } from "pg-promise";
 import { DatabaseConnection } from "infra/databases";
 
 export class PGDatabaseConnection implements DatabaseConnection {
-    static _INSTANCE: IDatabase<any>;
+    private static _INSTANCE: IDatabase<any>;
     private pg: IDatabase<any>;
 
     constructor() {
@@ -24,6 +24,7 @@ export class PGDatabaseConnection implements DatabaseConnection {
 
     // Example below shows the fastest way to camelize all column names.
     // NOTE: The example does not do processing for nested JSON objects.
+    // Credits to vitaly-t : https://vitaly-t.github.io/pg-promise/global.html#event:receive
 
     static initOptions = {
         receive(e: { data: any }) {

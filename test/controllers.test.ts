@@ -26,7 +26,7 @@ test("Should be possible to create an Account", async () => {
         ...input,
     };
     mockUseCase.execute.mockResolvedValue(mockResponse);
-    const expected = new HttpResponse(200, mockResponse);
+    const expected = new HttpResponse().ok(mockResponse);
     const output = await sut.handle(input);
     expect(output).toMatchObject(expected);
 });

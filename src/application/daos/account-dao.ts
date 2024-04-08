@@ -3,9 +3,7 @@ import { DAO } from "application/daos";
 import { DatabaseConnection } from "infra/databases";
 
 export class AccountDAO implements DAO<Account> {
-    constructor(readonly database: DatabaseConnection) {
-        this.database = database;
-    }
+    constructor(private readonly database: DatabaseConnection) {}
     async save(account: Account): Promise<void> {
         this.existsById(account.accountId);
         this.database.query(
