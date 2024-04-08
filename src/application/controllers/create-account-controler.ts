@@ -4,14 +4,19 @@ import { Usecase } from "application/usecases";
 
 export class CreateAccountController implements Controller {
     constructor(
-        readonly usecase: Usecase<CreateAccountInput, CreateAccountOutput>
+        private readonly usecase: Usecase<
+            CreateAccountInput,
+            CreateAccountOutput
+        >
     ) {}
-    async handle(input: CreateAccountInput): Promise<HttpResponse> {
+    async handle(
+        input: CreateAccountInput
+    ): Promise<HttpResponse<CreateAccountOutput>> {
         const data = await this.usecase.execute(input);
         return new HttpResponse(200, data);
     }
 }
 
-export class HttpResponse {
-    constructor(readonly code: number, readonly data: Object) {}
+export class HttpResponse<T = any> {
+    constructor(readonly code: number, readonly data: T) {}
 }
