@@ -21,15 +21,11 @@ export interface Request<T> extends Express.Request {
 }
 
 app.post("/signup", async function (req: Request<SignUpInput>, res) {
-    try {
-        const createAccountController = new CreateAccountFactory(
-            new PGDatabaseConnection()
-        ).getController();
-        const response = await createAccountController.handle(req.body);
-        res.status(response.code).json(response.data);
-    } catch (error: any) {
-        res.status(422).json({ message: error.message });
-    }
+    const createAccountController = new CreateAccountFactory(
+        new PGDatabaseConnection()
+    ).getController();
+    const response = await createAccountController.handle(req.body);
+    res.status(response.code).json(response.data);
 });
 
 app.listen(process.env.PORT || 3000);

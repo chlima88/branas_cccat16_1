@@ -26,17 +26,18 @@ export class Account {
     }
 
     public static restore(input: InputRestore): Account {
-        const x = Object.assign(new Account(), input);
-        console.log("pos >> ", Object.assign({}, { ...input }));
-        return x;
+        return Object.assign(new Account(), input);
     }
 
     private static validate(input: InputCreate): void {
-        if (!this.isValidName(input.name)) throw new Error("Invalid name");
-        if (!this.isValidEmail(input.email)) throw new Error("Invalid email");
-        if (!isValidCpf(input.cpf)) throw new Error("Invalid cpf");
+        if (!this.isValidName(input.name))
+            throw new InvalidEntityAttribute("Invalid name");
+        if (!this.isValidEmail(input.email))
+            throw new InvalidEntityAttribute("Invalid email");
+        if (!isValidCpf(input.cpf))
+            throw new InvalidEntityAttribute("Invalid cpf");
         if (input.isDriver && !this.isValidCarPlate(input.carPlate!))
-            throw new Error("Invalid car plate");
+            throw new InvalidEntityAttribute("Invalid car plate");
     }
 
     private static isValidName(name: string): boolean {
@@ -65,3 +66,10 @@ type InputCreate = {
 };
 
 type InputRestore = Account;
+
+export class InvalidEntityAttribute extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
