@@ -15,14 +15,7 @@ export class Account {
 
     public static create(input: InputCreate): Account {
         this.validate(input);
-        const account = new Account();
-        account.name = input.name;
-        account.email = input.email;
-        account.cpf = input.cpf;
-        account.carPlate = input.carPlate;
-        account.isDriver = input.isDriver ?? false;
-        account.isPassenger = input.isPassenger ?? false;
-        return account;
+        return Object.assign(new Account(), input);
     }
 
     public static restore(input: InputRestore): Account {
@@ -31,13 +24,23 @@ export class Account {
 
     private static validate(input: InputCreate): void {
         if (!this.isValidName(input.name))
-            throw new InvalidEntityAttribute("Invalid name");
+            throw new InvalidEntityAttribute("Invalid/missing name attribute");
         if (!this.isValidEmail(input.email))
-            throw new InvalidEntityAttribute("Invalid email");
+            throw new InvalidEntityAttribute("Invalid/missing email attribute");
         if (!isValidCpf(input.cpf))
-            throw new InvalidEntityAttribute("Invalid cpf");
+            throw new InvalidEntityAttribute("Invalid/missing cpf attribute");
+        if (!this.isValidAccountType(input.isPassenger))
+            throw new InvalidEntityAttribute(
+                "Invalid/missing isPassenger attribute"
+            );
+        if (!this.isValidAccountType(input.isDriver))
+            throw new InvalidEntityAttribute(
+                "Invalid/missing isDriver attribute"
+            );
         if (input.isDriver && !this.isValidCarPlate(input.carPlate!))
-            throw new InvalidEntityAttribute("Invalid car plate");
+            throw new InvalidEntityAttribute(
+                "Invalid/missing carPlate attribute"
+            );
     }
 
     private static isValidName(name: string): boolean {
@@ -51,6 +54,10 @@ export class Account {
         return typeof email === "string" && !!email.match(/^(.+)@(.+)$/);
     }
 
+    private static isValidAccountType(accountType: boolean): boolean {
+        return typeof accountType === "boolean" && accountType !== undefined;
+    }
+
     private static isValidCarPlate(plate: string): boolean {
         return typeof plate === "string" && !!plate.match(/[A-Z]{3}[0-9]{4}/);
     }
@@ -61,8 +68,8 @@ type InputCreate = {
     email: string;
     cpf: string;
     carPlate?: string;
-    isPassenger?: boolean;
-    isDriver?: boolean;
+    isPassenger: boolean;
+    isDriver: boolean;
 };
 
 type InputRestore = Account;

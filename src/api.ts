@@ -16,7 +16,7 @@ type SignUpInput = {
     isDriver: boolean;
 };
 
-export interface Request<T> extends Express.Request {
+interface Request<T> extends Express.Request {
     body: T;
 }
 

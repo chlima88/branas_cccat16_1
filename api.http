@@ -4,6 +4,6 @@ content-type: application/json
 {
     "name": "Charles",
     "email": "c@branas.io",
-    "cpf": "922.828.340-89"
+    "cpf": "922.828.340-89",
+    "isDriver": false
 }
-
