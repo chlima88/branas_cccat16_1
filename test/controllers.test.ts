@@ -1,5 +1,5 @@
 import { CreateAccountInput } from "application/types";
-import { CreateAccountController } from "application/controllers";
+import { CreateAccountController, HttpResponse } from "application/controllers";
 
 let input: CreateAccountInput;
 
@@ -21,8 +21,12 @@ beforeEach(() => {
 
 test("Should be possible to create an Account", async () => {
     const sut = new CreateAccountController(mockUseCase);
-    const expected = { accountId: crypto.randomUUID(), ...input };
-    mockUseCase.execute.mockResolvedValue(expected);
+    const mockResponse = {
+        accountId: crypto.randomUUID(),
+        ...input,
+    };
+    mockUseCase.execute.mockResolvedValue(mockResponse);
+    const expected = new HttpResponse(200, mockResponse);
     const output = await sut.handle(input);
-    expect(output).toMatchObject(input);
+    expect(output).toMatchObject(expected);
 });

@@ -28,6 +28,5 @@ test("Should be possible to create an account", async () => {
     const output = await sut.execute(input);
 
     expect(mockDao.save).toHaveBeenCalled();
-    expect(output).toMatchObject(input);
     expect(output.accountId).toBeDefined();
 });

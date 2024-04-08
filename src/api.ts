@@ -34,4 +34,4 @@ app.post("/signup", async function (req: Request<SignUpInput>, res) {
     }
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

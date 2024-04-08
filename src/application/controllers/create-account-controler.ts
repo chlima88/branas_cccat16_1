@@ -12,6 +12,6 @@ export class CreateAccountController implements Controller {
     }
 }
 
-class HttpResponse {
+export class HttpResponse {
     constructor(readonly code: number, readonly data: Object) {}
 }
