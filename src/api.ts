@@ -25,9 +25,7 @@ app.post("/signup", async function (req: Request<SignUpInput>, res) {
         const createAccountController = new CreateAccountFactory(
             new PGDatabaseConnection()
         ).getController();
-        const response = await createAccountController.handle(
-            req.body as SignUpInput
-        );
+        const response = await createAccountController.handle(req.body);
         res.status(response.code).json(response.data);
     } catch (error: any) {
         res.status(422).json({ message: error.message });
