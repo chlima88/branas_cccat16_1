@@ -7,5 +7,5 @@ content-type: application/json
     "password": "123!@#qweQWE",
     "cpf": "922.828.340-89",
     "isDriver": false,
-    "isPassenfer": true
+    "isPassenger": true
 }

@@ -9,7 +9,16 @@ export class CreateAccount
     public constructor(private readonly accountDAO: DAO<Account>) {}
     async execute(input: CreateAccountInput): Promise<CreateAccountOutput> {
         const account = Account.create(input);
+        if (await this.accountDAO.existsByEmail(input.email))
+            throw new EntityAlreadyExists("Email already in use");
         await this.accountDAO.save(account);
         return { accountId: account.accountId };
+    }
+}
+
+export class EntityAlreadyExists extends Error {
+    constructor(readonly message: string) {
+        super(message);
+        this.name = this.constructor.name;
     }
 }

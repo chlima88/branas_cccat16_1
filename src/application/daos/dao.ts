@@ -4,4 +4,5 @@ export interface DAO<T> {
     findAll(): Promise<T[]>;
     findById(id: string): Promise<void>;
     existsById(id: string): Promise<boolean>;
+    existsByEmail(email: string): Promise<boolean>;
 }

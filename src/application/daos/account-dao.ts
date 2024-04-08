@@ -5,7 +5,6 @@ import { DatabaseConnection } from "infra/databases";
 export class AccountDAO implements DAO<Account> {
     constructor(private readonly database: DatabaseConnection) {}
     async save(account: Account): Promise<void> {
-        this.existsById(account.accountId);
         this.database.query(
             "insert into cccat16.account (account_id, name, email, password, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7, $8)",
             [
@@ -38,6 +37,15 @@ export class AccountDAO implements DAO<Account> {
             await this.database.query<Account[]>(
                 "select * from cccat16.account where account_id = $1",
                 [id]
+            )
+        ).length;
+    }
+
+    async existsByEmail(email: string): Promise<boolean> {
+        return !!(
+            await this.database.query<Account[]>(
+                "select * from cccat16.account where email = $1",
+                [email]
             )
         ).length;
     }

@@ -1,6 +1,6 @@
 import { Controller } from "application/controllers";
 import { CreateAccountInput, CreateAccountOutput } from "application/types";
-import { Usecase } from "application/usecases";
+import { EntityAlreadyExists, Usecase } from "application/usecases";
 import { InvalidEntityAttribute } from "entities";
 
 export class CreateAccountController implements Controller {
@@ -18,6 +18,10 @@ export class CreateAccountController implements Controller {
             return new HttpResponse().ok(data);
         } catch (error: any) {
             if (error instanceof InvalidEntityAttribute)
+                return new HttpResponse().unprocessableEntity({
+                    message: error.message,
+                });
+            if (error instanceof EntityAlreadyExists)
                 return new HttpResponse().unprocessableEntity({
                     message: error.message,
                 });
