@@ -6,11 +6,11 @@ axios.defaults.validateStatus = function () {
 };
 
 let input: CreateAccountInput;
-
 beforeEach(() => {
     input = {
         name: "John Doe",
         email: `john.doe${Math.random()}@gmail.com`,
+        password: "abcABC123!@#",
         cpf: "87748248800",
         carPlate: "ABC1234",
         isPassenger: true,
@@ -54,21 +54,39 @@ test.each([
     expect(output.status).toBe(422);
 });
 
+test.each([undefined, null, 123, "", "   ", "abc.com"])(
+    "Should return status 422 for invalid emails: %s",
+    async (email: any) => {
+        input.email = email;
+        const output = await axios.post("http://localhost:3000/signup", input);
+        expect(output.status).toBe(422);
+    }
+);
+
+test.each([undefined, null, "", 123, "   "])(
+    "Should return status 422 for invalid password: %s",
+    async (password: any) => {
+        input.password = password;
+        const output = await axios.post("http://localhost:3000/signup", input);
+        expect(output.status).toBe(422);
+    }
+);
+
+test.each([undefined, null, ""])(
+    "Should return status 422 for invalid cpf: %s",
+    async (cpf: any) => {
+        input.cpf = cpf;
+        const output = await axios.post("http://localhost:3000/signup", input);
+        expect(output.status).toBe(422);
+    }
+);
+
 test.each([undefined, null, 123, "", "   ", "1234567", "abcdabc"])(
     "Should return status 422 for invalid plates: %s",
     async (plate: any) => {
         input.isDriver = true;
         input.isPassenger = false;
         input.carPlate = plate;
-        const output = await axios.post("http://localhost:3000/signup", input);
-        expect(output.status).toBe(422);
-    }
-);
-
-test.each([undefined, null, 123, "", "   ", "abc.com"])(
-    "Should return status 422 for invalid emails: %s",
-    async (email: any) => {
-        input.email = email;
         const output = await axios.post("http://localhost:3000/signup", input);
         expect(output.status).toBe(422);
     }

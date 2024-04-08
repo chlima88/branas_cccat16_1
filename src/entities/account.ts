@@ -4,6 +4,7 @@ export class Account {
     accountId: string;
     name!: string;
     email!: string;
+    password!: string;
     cpf!: string;
     carPlate?: string;
     isPassenger!: boolean;
@@ -27,6 +28,10 @@ export class Account {
             throw new InvalidEntityAttribute("Invalid/missing name attribute");
         if (!this.isValidEmail(input.email))
             throw new InvalidEntityAttribute("Invalid/missing email attribute");
+        if (!this.isValidPassword(input.password))
+            throw new InvalidEntityAttribute(
+                "Invalid/missing password attribute"
+            );
         if (!isValidCpf(input.cpf))
             throw new InvalidEntityAttribute("Invalid/missing cpf attribute");
         if (!this.isValidAccountType(input.isPassenger))
@@ -54,6 +59,15 @@ export class Account {
         return typeof email === "string" && !!email.match(/^(.+)@(.+)$/);
     }
 
+    private static isValidPassword(password: string): boolean {
+        return (
+            typeof password === "string" &&
+            !!password.match(
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+            )
+        );
+    }
+
     private static isValidAccountType(accountType: boolean): boolean {
         return typeof accountType === "boolean" && accountType !== undefined;
     }
@@ -66,6 +80,7 @@ export class Account {
 type InputCreate = {
     name: string;
     email: string;
+    password: string;
     cpf: string;
     carPlate?: string;
     isPassenger: boolean;

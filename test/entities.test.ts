@@ -9,6 +9,7 @@ beforeEach(() => {
         name: "John Doe",
         email: `john.doe${Math.random()}@gmail.com`,
         cpf: "87748248800",
+        password: "abcABC123!@#",
         isPassenger: true,
         isDriver: true,
         carPlate: "ABC1234",
@@ -50,6 +51,17 @@ test("Should not be possible to create an Account with invalid email", () => {
         "Invalid/missing email attribute"
     );
 });
+
+test.each([undefined, null, 123, "", "  "])(
+    "Should not be possible to create an Account with invalid password: %s",
+    (password: any) => {
+        input.password = password;
+        expect(() => Account.create(input)).toThrow(InvalidEntityAttribute);
+        expect(() => Account.create(input)).toThrow(
+            "Invalid/missing password attribute"
+        );
+    }
+);
 
 test("Should not be possible to create an Account with invalid cpf", () => {
     input.cpf = undefined as any;

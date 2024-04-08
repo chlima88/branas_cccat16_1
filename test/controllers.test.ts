@@ -11,6 +11,7 @@ beforeEach(() => {
     input = {
         name: "John Doe",
         email: `john.doe${Math.random()}@gmail.com`,
+        password: "abcABC123!@#",
         cpf: "87748248800",
         carPlate: undefined,
         isPassenger: true,
