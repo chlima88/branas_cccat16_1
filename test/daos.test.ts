@@ -30,11 +30,12 @@ test("Should be possible to save an Account", async () => {
 
     expect(mockConnection.query).toHaveBeenNthCalledWith(
         2,
-        "insert into cccat16.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7)",
+        "insert into cccat16.account (account_id, name, email, password, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7, $8)",
         [
             input.accountId,
             input.name,
             input.email,
+            input.password,
             input.cpf,
             input.carPlate,
             !!input.isPassenger,

@@ -7,11 +7,12 @@ export class AccountDAO implements DAO<Account> {
     async save(account: Account): Promise<void> {
         this.existsById(account.accountId);
         this.database.query(
-            "insert into cccat16.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7)",
+            "insert into cccat16.account (account_id, name, email, password, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7, $8)",
             [
                 account.accountId,
                 account.name,
                 account.email,
+                account.password,
                 account.cpf,
                 account.carPlate,
                 !!account.isPassenger,
