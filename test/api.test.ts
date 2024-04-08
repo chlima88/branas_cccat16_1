@@ -1,17 +1,11 @@
+import { CreateAccountInput } from "application/types";
 import axios from "axios";
 
 axios.defaults.validateStatus = function () {
     return true;
 };
 
-let input: {
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+let input: CreateAccountInput;
 
 beforeEach(() => {
     input = {

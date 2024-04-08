@@ -1,17 +1,17 @@
 import { Controller } from "application/controllers";
+import { CreateAccountInput, CreateAccountOutput } from "application/types";
 import { Usecase } from "application/usecases";
+
 export class CreateAccountController implements Controller {
-    constructor(readonly usecase: Usecase) {}
-    async handle(data: CreateAccountInput): Promise<any> {
-        return await this.usecase.execute(data);
+    constructor(
+        readonly usecase: Usecase<CreateAccountInput, CreateAccountOutput>
+    ) {}
+    async handle(input: CreateAccountInput): Promise<HttpResponse> {
+        const data = await this.usecase.execute(input);
+        return new HttpResponse(200, data);
     }
 }
 
-type CreateAccountInput = {
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+class HttpResponse {
+    constructor(readonly code: number, readonly data: Object) {}
+}

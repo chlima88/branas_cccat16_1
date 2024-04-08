@@ -1,13 +1,7 @@
+import { CreateAccountInput } from "application/types";
 import { CreateAccount } from "application/usecases";
 
-let input: {
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+let input: CreateAccountInput;
 
 let mockDao = {
     save: jest.fn(),
@@ -26,14 +20,7 @@ beforeEach(() => {
         isPassenger: true,
         isDriver: false,
     };
-
-    mockDao = {
-        save: jest.fn(),
-        existsById: jest.fn(),
-        findById: jest.fn(),
-        deleteById: jest.fn(),
-        findAll: jest.fn(),
-    };
+    mockDao.save.mockReset();
 });
 
 test("Should be possible to create an account", async () => {

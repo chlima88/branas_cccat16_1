@@ -1,20 +1,14 @@
 import { Account } from "entities";
 import { DAO } from "application/daos";
-
-export interface DatabaseConnection {
-    connect(): void;
-    query(query: string, data: any[]): Promise<any>;
-    disconnect(): void;
-}
+import { DatabaseConnection } from "infra/databases";
 
 export class AccountDAO implements DAO<Account> {
-    constructor(readonly connection: DatabaseConnection) {
-        this.connection = connection;
+    constructor(readonly database: DatabaseConnection) {
+        this.database = database;
     }
     async save(account: Account): Promise<void> {
         this.existsById(account.accountId);
-        this.connection.connect();
-        this.connection.query(
+        this.database.query(
             "insert into cccat16.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver) values ($1, $2, $3, $4, $5, $6, $7)",
             [
                 account.accountId,
@@ -26,7 +20,6 @@ export class AccountDAO implements DAO<Account> {
                 !!account.isDriver,
             ]
         );
-        this.connection.disconnect();
     }
 
     async deleteById(id: string): Promise<void> {
@@ -42,12 +35,11 @@ export class AccountDAO implements DAO<Account> {
     }
 
     async existsById(id: string): Promise<boolean> {
-        this.connection.connect();
-        const existsAccount = !!(await this.connection.query(
-            "select * from cccat16.account where accountId = $1",
-            [id]
-        ));
-        this.connection.disconnect();
-        return existsAccount;
+        return !!(
+            await this.database.query<Account[]>(
+                "select * from cccat16.account where account_id = $1",
+                [id]
+            )
+        ).length;
     }
 }

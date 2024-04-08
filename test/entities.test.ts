@@ -1,13 +1,7 @@
+import { CreateAccountInput } from "application/types";
 import { Account } from "entities";
 
-let input: {
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+let input: CreateAccountInput;
 
 beforeEach(() => {
     input = {

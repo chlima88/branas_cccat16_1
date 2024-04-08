@@ -2,12 +2,12 @@ import { isValidCpf } from "validateCpf";
 
 export class Account {
     accountId: string;
-    name?: string;
-    email?: string;
-    cpf?: string;
+    name!: string;
+    email!: string;
+    cpf!: string;
     carPlate?: string;
-    isPassenger?: boolean = false;
-    isDriver?: boolean = false;
+    isPassenger!: boolean;
+    isDriver!: boolean;
 
     private constructor() {
         this.accountId = crypto.randomUUID();
@@ -20,14 +20,15 @@ export class Account {
         account.email = input.email;
         account.cpf = input.cpf;
         account.carPlate = input.carPlate;
-        account.isDriver = input.isDriver;
-        account.isPassenger = input.isPassenger;
+        account.isDriver = input.isDriver ?? false;
+        account.isPassenger = input.isPassenger ?? false;
         return account;
     }
 
     public static restore(input: InputRestore): Account {
-        const account = new Account();
-        return Object.assign(account, input);
+        const x = Object.assign(new Account(), input);
+        console.log("pos >> ", Object.assign({}, { ...input }));
+        return x;
     }
 
     private static validate(input: InputCreate): void {

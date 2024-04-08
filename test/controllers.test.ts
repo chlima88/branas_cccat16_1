@@ -1,13 +1,7 @@
+import { CreateAccountInput } from "application/types";
 import { CreateAccountController } from "application/controllers";
-import { CreateAccount } from "application/usecases";
-let input: {
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+
+let input: CreateAccountInput;
 
 let mockUseCase = {
     execute: jest.fn(),

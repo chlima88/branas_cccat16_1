@@ -1,14 +1,7 @@
 import { AccountDAO } from "application/daos";
+import { Account } from "entities";
 
-let input: {
-    accountId: string;
-    name: string;
-    email: string;
-    cpf: string;
-    carPlate?: string;
-    isPassenger: boolean;
-    isDriver: boolean;
-};
+let input: Account;
 
 let mockConnection = {
     connect: jest.fn(),
@@ -57,7 +50,7 @@ test("Should be possible to check if and account exists", async () => {
 
     expect(mockConnection.query).toHaveBeenNthCalledWith(
         1,
-        "select * from cccat16.account where accountId = $1",
+        "select * from cccat16.account where account_id = $1",
         [input.accountId]
     );
 });

@@ -2,6 +2,7 @@
 
 if [ $1 = start ]; then
     docker build -t app-db ./docker && docker run --rm -it -d -p 5432:5432 app-db
+    pnpm dev
 fi
 
 if [ $1 = stop ]; then
@@ -11,4 +12,5 @@ fi
 if [ $1 = restart ]; then
     docker stop $(docker ps -a -q)
     docker run --rm -it -d -p 5432:5432 app-db
+    pnpm dev
 fi
