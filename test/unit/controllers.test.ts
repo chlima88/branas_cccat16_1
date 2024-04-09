@@ -1,3 +1,4 @@
+import { InvalidEntityAttribute } from "entities/account";
 import { CreateAccountInput } from "application/types";
 import { CreateAccountController, HttpResponse } from "application/controllers";
 
@@ -30,4 +31,14 @@ test("Should be possible to create an Account", async () => {
     const expected = new HttpResponse().ok(mockResponse);
     const output = await sut.handle(input);
     expect(output).toMatchObject(expected);
+});
+
+test.only("Should be return 422 for invalid property", async () => {
+    const sut = new CreateAccountController(mockUseCase);
+    mockUseCase.execute.mockImplementation(() => {
+        throw new InvalidEntityAttribute();
+    });
+
+    const expected = new HttpResponse().unprocessableEntity();
+    await expect(sut.handle(input)).resolves.toMatchObject(expected);
 });

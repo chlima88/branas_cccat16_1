@@ -35,12 +35,7 @@ test("Should be possible to create an account", async () => {
 
 test("Should throw EntityAlreadyExists when creating an account with duplicated email", async () => {
     const sut = new CreateAccount(mockDao);
-    mockDao.existsByEmail.mockReturnValueOnce(false).mockReturnValue(true);
-    await sut.execute(input);
-    expect(async () => await sut.execute(input)).rejects.toThrow(
-        "Email already in use"
-    );
-    expect(async () => await sut.execute(input)).rejects.toThrow(
-        EntityAlreadyExists
-    );
+    mockDao.existsByEmail.mockResolvedValue(true);
+    await expect(sut.execute(input)).rejects.toThrow("Email already in use");
+    await expect(sut.execute(input)).rejects.toThrow(EntityAlreadyExists);
 });

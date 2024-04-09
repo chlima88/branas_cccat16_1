@@ -17,7 +17,7 @@ export class CreateAccount
 }
 
 export class EntityAlreadyExists extends Error {
-    constructor(readonly message: string) {
+    constructor(message?: string) {
         super(message);
         this.name = this.constructor.name;
     }

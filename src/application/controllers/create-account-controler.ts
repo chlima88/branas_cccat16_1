@@ -17,18 +17,21 @@ export class CreateAccountController implements Controller {
             const data = await this.usecase.execute(input);
             return new HttpResponse().ok(data);
         } catch (error: any) {
-            if (error instanceof InvalidEntityAttribute)
-                return new HttpResponse().unprocessableEntity({
-                    message: error.message,
-                });
-            if (error instanceof EntityAlreadyExists)
-                return new HttpResponse().unprocessableEntity({
-                    message: error.message,
-                });
-            else {
-                return new HttpResponse().serverError();
-            }
+            return this.exceptionHandler(error);
         }
+    }
+
+    private exceptionHandler(error: any) {
+        const message = error.message
+            ? {
+                  message: error.message,
+              }
+            : undefined;
+        if (error instanceof InvalidEntityAttribute)
+            return new HttpResponse().unprocessableEntity(message);
+        if (error instanceof EntityAlreadyExists)
+            return new HttpResponse().unprocessableEntity(message);
+        return new HttpResponse().serverError();
     }
 }
 
@@ -40,13 +43,13 @@ export class HttpResponse<T = any> {
         this.code = 200;
     }
 
-    ok(data: T) {
+    ok(data?: T) {
         this.code = 200;
         this.data = data;
         return this;
     }
 
-    unprocessableEntity(data: T) {
+    unprocessableEntity(data?: T) {
         this.code = 422;
         this.data = data;
         return this;

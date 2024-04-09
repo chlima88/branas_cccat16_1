@@ -90,7 +90,7 @@ type InputCreate = {
 type InputRestore = Account;
 
 export class InvalidEntityAttribute extends Error {
-    constructor(message: string) {
+    constructor(message?: string) {
         super(message);
         this.name = this.constructor.name;
     }
