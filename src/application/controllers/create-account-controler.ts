@@ -3,16 +3,23 @@ import { CreateAccountInput, CreateAccountOutput } from "application/types";
 import { EntityAlreadyExists, Usecase } from "application/usecases";
 import { InvalidEntityAttribute } from "entities";
 
-export class CreateAccountController implements Controller {
+export class CreateAccountController
+    implements
+        Controller<
+            CreateAccountInput,
+            Promise<HttpResponse<CreateAccountOutput | string>>
+        >
+{
     constructor(
         private readonly usecase: Usecase<
             CreateAccountInput,
             CreateAccountOutput
         >
     ) {}
+
     async handle(
         input: CreateAccountInput
-    ): Promise<HttpResponse<CreateAccountOutput | string>> {
+    ): Promise<HttpResponse<string | CreateAccountOutput>> {
         try {
             const data = await this.usecase.execute(input);
             return new HttpResponse().ok(data);
