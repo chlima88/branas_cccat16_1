@@ -11,22 +11,22 @@ export class PGDatabaseConnection implements DatabaseConnection {
             PGDatabaseConnection._INSTANCE ?? PGDatabaseConnection.connect();
     }
 
-    static connect() {
+    async query<T = any>(query: string, data: any[]): Promise<T> {
+        return await this.pg.query<T>(query, data);
+    }
+
+    private static connect() {
         PGDatabaseConnection._INSTANCE = pgp(PGDatabaseConnection.initOptions)(
             `${process.env.DB_CONNECTION_STRING}`
         );
         return PGDatabaseConnection._INSTANCE;
     }
 
-    async query<T = any>(query: string, data: any[]): Promise<T> {
-        return await this.pg.query<T>(query, data);
-    }
-
     // Example below shows the fastest way to camelize all column names.
     // NOTE: The example does not do processing for nested JSON objects.
     // Credits to vitaly-t : https://vitaly-t.github.io/pg-promise/global.html#event:receive
 
-    static initOptions = {
+    private static initOptions = {
         receive(e: { data: any }) {
             ((data: string | any[]) => {
                 const tmp = data[0];
